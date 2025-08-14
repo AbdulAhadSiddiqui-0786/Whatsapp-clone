@@ -52,6 +52,26 @@ export default function App() {
           console.log("Received message for a new conversation:", newMessage);
           return prev;
         }
+        if (conversationIndex === -1) {
+          // If it's a new conversation, create it.
+          const newConversation = {
+            _id: newMessage.wa_id, // Group ID is the user's wa_id
+            contactName: newMessage.contactName,
+            messages: [newMessage],
+          };
+          // Add the new conversation and re-sort the list by the most recent message
+          const updatedList = [newConversation, ...prev];
+          updatedList.sort((a, b) => {
+            const lastMsgTimestampA = new Date(
+              a.messages[a.messages.length - 1].timestamp
+            ).getTime();
+            const lastMsgTimestampB = new Date(
+              b.messages[b.messages.length - 1].timestamp
+            ).getTime();
+            return lastMsgTimestampB - lastMsgTimestampA;
+          });
+          return updatedList;
+        }
 
         // If it's an existing conversation
         const updatedConversations = [...prev];

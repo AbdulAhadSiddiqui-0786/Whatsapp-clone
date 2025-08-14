@@ -8,6 +8,7 @@ export const getConversations = async () => {
 };
 
 export const sendMessage = async (msg) => {
-  const { data } = await axios.post(`${API_URL}/conversations`, msg);
+  // Corrected the URL to point to the /messages endpoint
+  const { data } = await axios.post(`${API_URL}/messages`, msg);
   return data;
 };
